@@ -34,6 +34,9 @@ android {
 
 dependencies {
 
+    implementation(project(":tracks"))
+    implementation(project(":domain"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

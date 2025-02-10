@@ -1,6 +1,6 @@
 [versions]
 agp = "8.8.0"
-kotlin = "1.9.24"
+kotlin = "2.0.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -11,6 +11,7 @@ constraintlayout = "2.2.0"
 navigationFragmentKtx = "2.8.6"
 navigationUiKtx = "2.8.6"
 activity = "1.10.0"
+jetbrainsKotlinJvm = "1.9.24"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -27,4 +28,6 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 

@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.avito.data"
+    namespace = "com.avito.tracks"
     compileSdk = 35
 
     defaultConfig {
@@ -34,15 +34,13 @@ android {
 
 dependencies {
 
-    implementation(project(":domain"))
-
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-    implementation(libs.logging.interceptor)
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.fragment.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

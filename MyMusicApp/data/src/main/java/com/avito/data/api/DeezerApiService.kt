@@ -9,6 +9,6 @@ interface DeezerApiService{
     suspend fun getTopTracks():List<TrackInfo>
 
     @GET("search")
-    suspend fun getTrack( @Query("q") query:String):List<TrackInfo>
+    suspend fun getTracksBySearch( @Query("q") query:String):List<TrackInfo>
 
 }

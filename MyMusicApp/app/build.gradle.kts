@@ -42,6 +42,11 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
     implementation(project(":presentation"))
+    implementation(project(":tracks"))
+
+    implementation (libs.koin.core)
+    implementation(libs.koin.android)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

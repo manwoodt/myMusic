@@ -1,4 +1,4 @@
-package com.avito.presentation
+package com.avito.presentation.UI
 
 import com.avito.tracks.TracksFragment
 

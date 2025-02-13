@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 
 open class TracksFragment : Fragment() {
-    private val viewModel: TracksViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

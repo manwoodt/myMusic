@@ -8,13 +8,13 @@
 
     <fragment
         android:id="@+id/apiTracksFragment"
-        android:name="com.avito.presentation.ApiTracksFragment"
+        android:name="com.avito.presentation.UI.ApiTracksFragment"
         android:label="ApiTracksFragment"
         tools:layout="@layout/fragment_tracks"/>
 
     <fragment
         android:id="@+id/downloadedTracksFragment"
-        android:name="com.avito.presentation.DownloadedTracksFragment"
+        android:name="com.avito.presentation.UI.DownloadedTracksFragment"
         android:label="DownloadedTracksFragment"
         tools:layout="@layout/fragment_tracks"/>
 </navigation>

@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 class GetApiTopTracksUseCase(private val repository: TracksRepository) {
     suspend operator fun invoke(): Flow<List<TrackInfo>> {
-        return repository.getApiTopTracks()
+        val result = repository.getApiTopTracks()
+        return result
     }
 }

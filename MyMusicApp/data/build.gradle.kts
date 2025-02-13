@@ -36,6 +36,8 @@ dependencies {
 
     implementation(project(":domain"))
 
+    implementation (libs.koin.core)
+    implementation(libs.koin.android)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)

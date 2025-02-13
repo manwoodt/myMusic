@@ -1,5 +1,6 @@
 package com.avito.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avito.domain.model.TrackInfo
@@ -23,10 +24,13 @@ class ApiTracksViewModel(
     override suspend fun loadTracks() {
         viewModelScope.launch {
             try {
-                getChartTracksUseCase().collect {_tracks.value = it}
+                getChartTracksUseCase().collect {
+                    Log.d("loadTracks", it.toString())
+                    _tracks.value = it}
             }
             catch (e:Exception){
                 println(e.message)
+                Log.e("ApiTracksFragment", "Ошибка загрузки треков", e)
             }
         }
     }
@@ -35,10 +39,12 @@ class ApiTracksViewModel(
     override suspend fun searchTracks(query:String) {
         viewModelScope.launch {
             try {
-                searchTracksUseCase(query).collect {_tracks.value = it}
+                searchTracksUseCase(query).collect {
+                    Log.d("searchTracks", it.toString())
+                    _tracks.value = it}
             }
             catch (e:Exception){
-                println(e.message)
+                Log.d("searchTracks Error", e.message.toString())
             }
         }
     }

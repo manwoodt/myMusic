@@ -5,4 +5,5 @@ import com.avito.tracks.TracksViewModel
 
 class DownloadedTracksFragment() : TracksFragment() {
     override val viewModel: TracksViewModel = TODO()
+
 }

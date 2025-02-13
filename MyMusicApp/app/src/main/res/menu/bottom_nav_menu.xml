@@ -3,10 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:title="API tracks"
-        android:id="@+id/downloadedTracksFragment"/>
+        android:id="@+id/apiTracksFragment"
+        />
 
     <item android:title="Downloaded"
-        android:id="@+id/apiTracksFragment"/>
+        android:id="@+id/downloadedTracksFragment"/>
 
 
 </menu>

@@ -20,11 +20,8 @@ class TracksAdapter : RecyclerView.Adapter<TracksAdapter.TrackInfoViewHolder>() 
             fun bind(trackInfo: TrackInfo){
 
                 try {
-                    Log.d("TracksAdapter", "trackInfo.md5_image = ${trackInfo.md5_image}")
-                    val imageUrl = "https://e-cdns-images.dzcdn.net/images/cover/${trackInfo.md5_image}/100x100-000000-80-0-0.jpg"
-                    Log.d("TracksAdapter", "imageUrl = $imageUrl")
                     Glide.with(itemView.context)
-                        .load(imageUrl)
+                        .load(trackInfo.cover)
                         .error(R.drawable.baseline_cloud_off_24)
                         .into(binding.ivTrackImage)
 
@@ -34,8 +31,8 @@ class TracksAdapter : RecyclerView.Adapter<TracksAdapter.TrackInfoViewHolder>() 
                 }
 
                 binding.tvTrackTitle.text = trackInfo.title
-                binding.tvAlbumTitle.text = trackInfo.album.title
-                binding.tvArtistName.text = trackInfo.artist.name
+                binding.tvAlbumTitle.text = trackInfo.album
+                binding.tvArtistName.text = trackInfo.artist
 
             }
     }

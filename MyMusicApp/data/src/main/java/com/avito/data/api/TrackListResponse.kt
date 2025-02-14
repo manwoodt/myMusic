@@ -1,6 +1,6 @@
 package com.avito.data.api
 
-import com.avito.domain.model.TrackInfo
+import com.avito.data.model.TrackInfoDto
 import com.google.gson.annotations.SerializedName
 
 data class TrackListResponse(
@@ -8,5 +8,5 @@ data class TrackListResponse(
 )
 
 data class TrackContainer(
-    @SerializedName("data") val tracks: List<TrackInfo>
+    @SerializedName("data") val tracks: List<TrackInfoDto>
 )

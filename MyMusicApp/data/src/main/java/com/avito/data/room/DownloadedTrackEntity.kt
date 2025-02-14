@@ -2,8 +2,6 @@ package com.avito.data.room
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.avito.domain.model.Album
-import com.avito.domain.model.Artist
 
 @Entity(tableName = "downloaded_tracks")
 data class DownloadedTrackEntity(

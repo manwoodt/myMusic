@@ -23,12 +23,13 @@ class TracksRepositoryImpl(private val api: DeezerApiService):TracksRepository {
 
     override suspend fun getApiTracksBySearch(query: String): Flow<List<TrackInfo>> = flow {
         try {
-            val response = api.getTracksBySearch(query).trackContainer.tracks
+            val response = api.getTracksBySearch(query).tracks
+            Log.d("TracksRepositoryImpl","RESPONSE $response")
             emit(response)
-            Log.d("TracksRepositoryImpl",response.toString())
+
         }
         catch (e:Exception){
-            Log.d("TracksRepositoryImpl",e.message.toString())
+            Log.d("TracksRepositoryImpl","ERROR ${e.message.toString()}")
         }
 
     }

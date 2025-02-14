@@ -8,6 +8,6 @@ interface DeezerApiService{
     suspend fun getTopTracks():TrackListResponse
 
     @GET("search")
-    suspend fun getTracksBySearch( @Query("q") query:String):TrackListResponse
+    suspend fun getTracksBySearch( @Query("q") query:String):TrackContainer
 
 }

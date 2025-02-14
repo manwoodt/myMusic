@@ -1,6 +1,7 @@
 package com.avito.presentation.viewmodels
 
 import android.util.Log
+import androidx.collection.emptyLongSet
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avito.domain.model.TrackInfo
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class ApiTracksViewModel(
     private val getChartTracksUseCase: GetApiTopTracksUseCase,
-    private val searchTracksUseCase: SearchTracksUseCase
+    private val searchTracksUseCase: SearchTracksUseCase,
 ) : ViewModel(), TracksViewModel {
 
     private val _tracks = MutableStateFlow<List<TrackInfo>>(emptyList())
@@ -26,9 +27,9 @@ class ApiTracksViewModel(
             try {
                 getChartTracksUseCase().collect {
                     Log.d("loadTracks", it.toString())
-                    _tracks.value = it}
-            }
-            catch (e:Exception){
+                    _tracks.value = it
+                }
+            } catch (e: Exception) {
                 println(e.message)
                 Log.e("ApiTracksFragment", "Ошибка загрузки треков", e)
             }
@@ -36,14 +37,20 @@ class ApiTracksViewModel(
     }
 
     // поиск в интернете
-    override suspend fun searchTracks(query:String) {
+    override suspend fun searchTracks(query: String) {
         viewModelScope.launch {
             try {
                 searchTracksUseCase(query).collect {
-                    Log.d("searchTracks", it.toString())
-                    _tracks.value = it}
-            }
-            catch (e:Exception){
+                    if (it.isNotEmpty()) {
+                        Log.d("searchTracks", it.toString())
+                        _tracks.value = it
+                    } else {
+                        Log.e("searchTracks", "Нет треков по запросу $query")
+                    }
+                }
+
+
+            } catch (e: Exception) {
                 Log.d("searchTracks Error", e.message.toString())
             }
         }

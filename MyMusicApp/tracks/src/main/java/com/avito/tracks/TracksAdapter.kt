@@ -20,7 +20,6 @@ class TracksAdapter : RecyclerView.Adapter<TracksAdapter.TrackInfoViewHolder>() 
             fun bind(trackInfo: TrackInfo){
 
                 try {
-                    Log.d("TracksAdapter", "trackInfo.picture = ${trackInfo.artist.picture}")
                     Log.d("TracksAdapter", "trackInfo.md5_image = ${trackInfo.md5_image}")
                     val imageUrl = "https://e-cdns-images.dzcdn.net/images/cover/${trackInfo.md5_image}/100x100-000000-80-0-0.jpg"
                     Log.d("TracksAdapter", "imageUrl = $imageUrl")

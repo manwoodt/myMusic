@@ -2,10 +2,10 @@ package com.avito.data
 
 import androidx.room.Room
 import com.avito.data.api.DeezerApiService
-import com.avito.data.repositoryImpl.TracksRepositoryImpl
+import com.avito.data.repositoryImpl.ApiTracksRepositoryImpl
 import com.avito.data.room.DownloadedTrackDao
 import com.avito.data.room.DownloadedTracksDatabase
-import com.avito.domain.repository.TracksRepository
+import com.avito.domain.repository.ApiTracksRepository
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import org.koin.dsl.module
@@ -32,5 +32,5 @@ val dataModule = module {
 
     single<DownloadedTrackDao> { get<DownloadedTracksDatabase>().downloadedTracksDao() }
 
-    single<TracksRepository> { TracksRepositoryImpl(get()) }
+    single<ApiTracksRepository> { ApiTracksRepositoryImpl(get()) }
 }

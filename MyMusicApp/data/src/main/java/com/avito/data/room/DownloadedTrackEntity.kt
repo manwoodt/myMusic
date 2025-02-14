@@ -10,6 +10,6 @@ data class DownloadedTrackEntity(
     val preview: String,
     val artist: String,
     val album: String,
-    val md5_image:String,
+    val cover:String,
     val filePath:String? = null
 )

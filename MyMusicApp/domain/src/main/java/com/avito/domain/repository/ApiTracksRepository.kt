@@ -4,7 +4,7 @@ import com.avito.domain.model.TrackInfo
 import kotlinx.coroutines.flow.Flow
 
 
-interface TracksRepository {
+interface ApiTracksRepository {
     suspend fun getApiTopTracks(): Flow<List<TrackInfo>>
     suspend fun getApiTracksBySearch(query:String): Flow<List<TrackInfo>>
 }

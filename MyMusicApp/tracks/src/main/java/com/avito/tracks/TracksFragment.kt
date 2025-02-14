@@ -31,6 +31,9 @@ abstract class TracksFragment : Fragment() {
         setupRecyclerView()
         lifecycleScope.launch {
             viewModel.loadTracks()
+            viewModel.tracks.collect{newTracks->
+                adapter.submitList(newTracks)
+            }
         }
     }
 

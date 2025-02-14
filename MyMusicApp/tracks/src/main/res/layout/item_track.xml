@@ -9,8 +9,7 @@
         android:id="@+id/ivTrackImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/ic_launcher_foreground" />
+        android:layout_marginEnd="8dp" />
 
     <LinearLayout
         android:orientation="vertical"

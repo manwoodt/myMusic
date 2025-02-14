@@ -13,18 +13,6 @@ class ApiTracksFragment() : TracksFragment() {
 
     override val viewModel: ApiTracksViewModel by viewModel()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.tracks.collect { tracks ->
-                adapter.submitList(tracks)
-            }
-        }
-
-
-    }
-
 //    override fun loadTracks() {
 //        viewLifecycleOwner.lifecycleScope.launch {
 //            Log.d("ApiTracksFragment", "Начинаю загрузку треков")

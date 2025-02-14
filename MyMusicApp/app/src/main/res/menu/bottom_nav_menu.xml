@@ -4,10 +4,12 @@
 
     <item android:title="API tracks"
         android:id="@+id/apiTracksFragment"
+        android:icon="@drawable/ic_music_from_internet"
         />
 
     <item android:title="Downloaded"
-        android:id="@+id/downloadedTracksFragment"/>
+        android:id="@+id/downloadedTracksFragment"
+        android:icon="@drawable/ic_downloaded"/>
 
 
 </menu>

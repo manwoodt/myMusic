@@ -5,7 +5,8 @@ data class TrackInfo(
     val title: String,
     val preview: String,
     val artist: Artist,
-    val album: Album
+    val album: Album,
+    val md5_image:String
 )
 
 

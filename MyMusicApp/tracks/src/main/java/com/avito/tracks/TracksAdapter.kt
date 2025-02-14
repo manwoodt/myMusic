@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.avito.domain.model.TrackInfo
 import com.avito.tracks.databinding.ItemTrackBinding
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 
 class TracksAdapter : RecyclerView.Adapter<TracksAdapter.TrackInfoViewHolder>() {
 
@@ -19,14 +21,12 @@ class TracksAdapter : RecyclerView.Adapter<TracksAdapter.TrackInfoViewHolder>() 
 
                 try {
                     Log.d("TracksAdapter", "trackInfo.picture = ${trackInfo.artist.picture}")
-//                    binding.ivTrackImage.load(trackInfo.artist.picture ){
-//                        placeholder(R.drawable.ic_launcher_foreground)
-//                        //TODO заменить картинку
-//                        error(R.drawable.baseline_cloud_off_24)
-//                    }
+                    Log.d("TracksAdapter", "trackInfo.md5_image = ${trackInfo.md5_image}")
+                    val imageUrl = "https://e-cdns-images.dzcdn.net/images/cover/${trackInfo.md5_image}/100x100-000000-80-0-0.jpg"
+                    Log.d("TracksAdapter", "imageUrl = $imageUrl")
                     Glide.with(itemView.context)
-                        .load(trackInfo.artist.picture)
-                        .error(R.drawable.baseline_cloud_off_24) // Проверь, что такой ресурс существует
+                        .load(imageUrl)
+                        .error(R.drawable.baseline_cloud_off_24)
                         .into(binding.ivTrackImage)
 
                 }

@@ -18,26 +18,24 @@ class DownloadedTracksViewModel(
     private val downloadTrackUseCase: DownloadTrackUseCase,
     private val deleteDownloadedTrackUseCase: DeleteDownloadedTrackUseCase,
     private val searchDownloadedTracksUseCase: SearchDownloadedTracksUseCase,
-    private val getDownloadedTracksUseCase: GetDownloadedTracksUseCase
+    private val getDownloadedTracksUseCase: GetDownloadedTracksUseCase,
 ) : ViewModel(), TracksViewModel {
 
     private val _tracks = MutableStateFlow<List<TrackInfo>>(emptyList())
     override val tracks: StateFlow<List<TrackInfo>> = _tracks.asStateFlow()
 
 
-
-
     // загрузка песен из памяти телефона
     override suspend fun loadTracks() {
         viewModelScope.launch {
             try {
+                Log.d("TracksViewModel", "Загружаю треки...")
                 getDownloadedTracksUseCase().collect {
-                    Log.d("loadTracks from memory", it.toString())
+                    Log.d("TracksViewModel", "Получены треки: $it")
                     _tracks.value = it
                 }
             } catch (e: Exception) {
-                println(e.message)
-                Log.e("DownloadedTracksViewModel", "Ошибка загрузки треков", e)
+                Log.e("TracksViewModel", "Ошибка загрузки треков", e)
             }
         }
     }
@@ -56,17 +54,27 @@ class DownloadedTracksViewModel(
                 }
 
             } catch (e: Exception) {
-                Log.e("DownloadedTracksViewModel", "Ошибка поиска треков",e)
+                Log.e("DownloadedTracksViewModel", "Ошибка поиска треков", e)
             }
         }
     }
 
     override suspend fun downloadTrack(track: TrackInfo) {
         viewModelScope.launch {
-            downloadTrackUseCase(track)
-            loadTracks()
+            try {
+                Log.d("TracksViewModel", "Начинаю загрузку трека ${track.title}")
+                Log.d("TracksViewModel", "Статус до загрузки ${track.isDownloaded}")
+                downloadTrackUseCase(track)
+                Log.d("TracksViewModel", "Статус после загрузки ${track.isDownloaded}")
+                loadTracks()
+                Log.d("TracksViewModel", "Статус после обновления ${track.isDownloaded}")
+            } catch (e: Exception) {
+                Log.e("TracksViewModel", "Ошибка загрузки трека", e)
+            }
+
         }
     }
+
 
     override suspend fun deleteTrack(trackId: Long) {
         viewModelScope.launch {

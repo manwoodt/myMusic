@@ -64,7 +64,11 @@ class ApiTracksViewModel(
             Log.d("ApiTracksViewModel", "trackInfo до загрузки ${track.isDownloaded}")
             downloadTrackUseCase(track)
             Log.d("ApiTracksViewModel", "trackInfo после загрузки ${track.isDownloaded}")
-            loadTracks()
+            val updatedTracks = _tracks.value.map {
+                if (it.id == track.id) it.copy(isDownloaded = true) else it
+            }
+            _tracks.value = updatedTracks
+//            loadTracks()
             Log.d("ApiTracksViewModel", "trackInfo после загрузки и обновления ${track.isDownloaded}")
         }
     }

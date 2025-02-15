@@ -95,8 +95,6 @@ abstract class TracksFragment : Fragment(), TrackActionListener {
     override fun onDownloadClick(track: TrackInfo) {
         lifecycleScope.launch {
             viewModel.downloadTrack(track)
-
-
         }
     }
 

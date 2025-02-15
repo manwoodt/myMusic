@@ -24,9 +24,20 @@ class DownloadedTracksRepositoryImpl(
     override suspend fun downloadTrack(track: TrackInfo)  {
         withContext(Dispatchers.IO) {
             val filePath = savePreviewToFile(track)
+
+            // Логируем состояние трека до загрузки
             Log.d("DownloadedTracksRepositoryImpl", "trackInfo до загрузки ${track.isDownloaded}")
-            dao.insertDownloadedTrack(track.toEntity(filePath))
-            Log.d("DownloadedTracksRepositoryImpl", "trackInfo после загрузки ${track.isDownloaded}")
+
+            // Обновляем isDownloaded и сохраняем трек в базе данных
+            val updatedTrack = track.copy(isDownloaded = true)
+
+            // Логируем состояние трека после обновления
+            Log.d("DownloadedTracksRepositoryImpl", "trackInfo после обновления ${updatedTrack.isDownloaded}")
+
+            dao.insertDownloadedTrack(updatedTrack.toEntity(filePath))
+
+            // Логируем после вставки в базу данных
+            Log.d("DownloadedTracksRepositoryImpl", "trackInfo после загрузки ${updatedTrack.isDownloaded}")
         }
     }
 

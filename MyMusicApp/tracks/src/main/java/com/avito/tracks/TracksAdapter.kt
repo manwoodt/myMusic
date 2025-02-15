@@ -2,18 +2,16 @@ package com.avito.tracks
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Visibility
 import com.avito.domain.model.TrackInfo
 import com.avito.tracks.databinding.ItemTrackBinding
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
+
 
 class TracksAdapter(
-    private val trackActionListener: TrackActionListener
+    private val isDownloadScreenForIcon: Boolean,
+    private val actionWithTrack: (trackInfo: TrackInfo) -> Unit,
 ) : RecyclerView.Adapter<TracksAdapter.TrackInfoViewHolder>() {
 
     //TODO добавить обработку клика
@@ -21,7 +19,8 @@ class TracksAdapter(
 
     class TrackInfoViewHolder(
         private val binding: ItemTrackBinding,
-        private val trackActionListener: TrackActionListener
+        private val isDownloadScreenForIcon: Boolean,
+        private val actionWithTrack: (trackInfo: TrackInfo) -> Unit,
     ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(trackInfo: TrackInfo) {
@@ -40,25 +39,14 @@ class TracksAdapter(
             binding.tvAlbumTitle.text = trackInfo.album
             binding.tvArtistName.text = trackInfo.artist
 
-            if (trackInfo.isDownloaded) {
-                binding.btnDelete.visibility = View.VISIBLE
-                binding.btnDownload.setImageResource(R.drawable.ic_downloaded)
-            }
-            else{
-                binding.btnDelete.visibility = View.GONE
-                binding.btnDownload.setImageResource(R.drawable.ic_download)
-            }
+            val buttonIconRes = if(isDownloadScreenForIcon) R.drawable.ic_delete
+            else R.drawable.ic_download
 
-            binding.btnDownload.setOnClickListener {
-                Log.d("onDownloadClick", "Загрузка началась")
-                Log.d("TracksAdapter", "trackInfo до загрузки ${trackInfo.isDownloaded}")
-                trackActionListener.onDownloadClick(trackInfo)
-                Log.d("onDownloadClick", "Загрузка закончилась")
-                Log.d("TracksAdapter", "trackInfo после загрузки ${trackInfo.isDownloaded}")
-            }
+            binding.btnActionWithTrack.setImageResource(buttonIconRes)
 
-            binding.btnDelete.setOnClickListener {
-                trackActionListener.onDeleteClick(trackInfo.id)
+
+            binding.btnActionWithTrack.setOnClickListener {
+                actionWithTrack(trackInfo)
             }
 
         }
@@ -66,7 +54,7 @@ class TracksAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackInfoViewHolder {
         val binding = ItemTrackBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TrackInfoViewHolder(binding, trackActionListener)
+        return TrackInfoViewHolder(binding,isDownloadScreenForIcon, actionWithTrack)
     }
 
     override fun getItemCount(): Int {

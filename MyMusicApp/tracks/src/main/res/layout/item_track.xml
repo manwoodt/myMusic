@@ -38,20 +38,13 @@
 
     </LinearLayout>
     <ImageButton
-        android:id="@+id/btn_delete"
+        android:id="@+id/btn_actionWithTrack"
         android:layout_width="50dp"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
-        android:src="@drawable/ic_delete"
-        android:visibility="gone"
+        android:contentDescription="@string/Download_or_delete_track"
+
         />
 
-    <ImageButton
-        android:id="@+id/btn_download"
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:background= "@android:color/transparent"
-        android:src="@drawable/ic_download"
-        />
 
 </LinearLayout>

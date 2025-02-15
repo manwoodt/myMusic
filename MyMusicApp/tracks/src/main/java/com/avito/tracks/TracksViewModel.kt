@@ -7,6 +7,5 @@ interface TracksViewModel {
     val tracks: Flow<List<TrackInfo>>
     suspend fun loadTracks()
     suspend fun searchTracks(query:String)
-    suspend fun downloadTrack(track: TrackInfo)
-    suspend fun deleteTrack(trackId: Long)
+    suspend fun actionWithTrack(track: TrackInfo)
 }

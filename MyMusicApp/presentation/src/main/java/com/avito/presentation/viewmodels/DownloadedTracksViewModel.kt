@@ -59,28 +59,12 @@ class DownloadedTracksViewModel(
         }
     }
 
-    override suspend fun downloadTrack(track: TrackInfo) {
+    override suspend fun actionWithTrack(track: TrackInfo) {
         viewModelScope.launch {
-            try {
-                Log.d("TracksViewModel", "Начинаю загрузку трека ${track.title}")
-                Log.d("TracksViewModel", "Статус до загрузки ${track.isDownloaded}")
-                downloadTrackUseCase(track)
-                Log.d("TracksViewModel", "Статус после загрузки ${track.isDownloaded}")
-                loadTracks()
-                Log.d("TracksViewModel", "Статус после обновления ${track.isDownloaded}")
-            } catch (e: Exception) {
-                Log.e("TracksViewModel", "Ошибка загрузки трека", e)
-            }
-
-        }
-    }
-
-
-    override suspend fun deleteTrack(trackId: Long) {
-        viewModelScope.launch {
-            deleteDownloadedTrackUseCase(trackId)
+            deleteDownloadedTrackUseCase(track.id)
             loadTracks()
         }
     }
+
 
 }

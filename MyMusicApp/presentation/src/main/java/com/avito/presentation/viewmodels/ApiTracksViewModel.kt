@@ -59,23 +59,9 @@ class ApiTracksViewModel(
         }
     }
 
-    override suspend fun downloadTrack(track: TrackInfo) {
+    override suspend fun actionWithTrack(track: TrackInfo) {
         viewModelScope.launch {
-            Log.d("ApiTracksViewModel", "trackInfo до загрузки ${track.isDownloaded}")
             downloadTrackUseCase(track)
-            Log.d("ApiTracksViewModel", "trackInfo после загрузки ${track.isDownloaded}")
-            val updatedTracks = _tracks.value.map {
-                if (it.id == track.id) it.copy(isDownloaded = true) else it
-            }
-            _tracks.value = updatedTracks
-//            loadTracks()
-            Log.d("ApiTracksViewModel", "trackInfo после загрузки и обновления ${track.isDownloaded}")
-        }
-    }
-
-    override suspend fun deleteTrack(trackId: Long) {
-        viewModelScope.launch {
-            deleteDownloadedTrackUseCase(trackId)
             loadTracks()
         }
     }

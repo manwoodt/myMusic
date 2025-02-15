@@ -9,11 +9,10 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.avito.domain.model.TrackInfo
 import com.avito.tracks.databinding.FragmentTracksBinding
 import kotlinx.coroutines.launch
 
-abstract class TracksFragment : Fragment(), TrackActionListener {
+abstract class TracksFragment : Fragment() {
 
     protected abstract val viewModel: TracksViewModel
     protected lateinit var adapter: TracksAdapter
@@ -21,6 +20,7 @@ abstract class TracksFragment : Fragment(), TrackActionListener {
     private var _binding: FragmentTracksBinding? = null
     protected val binding get() = _binding!!
 
+    protected abstract val isDownloadScreenForIcon: Boolean
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,7 +80,11 @@ abstract class TracksFragment : Fragment(), TrackActionListener {
     }
 
     private fun setupRecyclerView() {
-        adapter = TracksAdapter(this)
+        adapter = TracksAdapter(isDownloadScreenForIcon){
+            lifecycleScope.launch {
+                (viewModel.actionWithTrack(it))
+            }
+        }
         binding.rvTracks.layoutManager = LinearLayoutManager(requireContext())
         binding.rvTracks.adapter = adapter
     }
@@ -91,16 +95,4 @@ abstract class TracksFragment : Fragment(), TrackActionListener {
     }
 
 
-    // Реализация методов TrackActionListener
-    override fun onDownloadClick(track: TrackInfo) {
-        lifecycleScope.launch {
-            viewModel.downloadTrack(track)
-        }
-    }
-
-    override fun onDeleteClick(trackId: Long) {
-        lifecycleScope.launch {
-            viewModel.deleteTrack(trackId)
-        }
-    }
 }

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avito.domain.model.TrackInfo
 import com.avito.domain.usecases.GetApiTopTracksUseCase
-import com.avito.domain.usecases.SearchTracksUseCase
+import com.avito.domain.usecases.SearchApiTracksUseCase
 import com.avito.tracks.TracksViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class ApiTracksViewModel(
     private val getChartTracksUseCase: GetApiTopTracksUseCase,
-    private val searchTracksUseCase: SearchTracksUseCase,
+    private val searchApiTracksUseCase: SearchApiTracksUseCase,
 ) : ViewModel(), TracksViewModel {
 
     private val _tracks = MutableStateFlow<List<TrackInfo>>(emptyList())
@@ -39,7 +39,7 @@ class ApiTracksViewModel(
     override suspend fun searchTracks(query: String) {
         viewModelScope.launch {
             try {
-                searchTracksUseCase(query).collect {
+                searchApiTracksUseCase(query).collect {
                     if (it.isNotEmpty()) {
                         Log.d("searchTracks", it.toString())
                         _tracks.value = it

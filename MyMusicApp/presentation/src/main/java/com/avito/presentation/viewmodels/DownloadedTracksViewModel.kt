@@ -1,13 +1,14 @@
 package com.avito.presentation.viewmodels
 
 import android.util.Log
-import androidx.collection.emptyLongSet
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avito.domain.model.TrackInfo
 import com.avito.domain.repository.DownloadedTracksRepository
-import com.avito.domain.usecases.GetApiTopTracksUseCase
-import com.avito.domain.usecases.SearchTracksUseCase
+import com.avito.domain.usecases.DeleteDownloadedTrackUseCase
+import com.avito.domain.usecases.DownloadTrackUseCase
+import com.avito.domain.usecases.GetDownloadedTracksUseCase
+import com.avito.domain.usecases.SearchDownloadedTracksUseCase
 import com.avito.tracks.TracksViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +16,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class DownloadedTracksViewModel(
-private val repository: DownloadedTracksRepository
+    private val downloadTrackUseCase: DownloadTrackUseCase,
+    private val deleteDownloadedTrackUseCase: DeleteDownloadedTrackUseCase,
+    private val searchDownloadedTracksUseCase: SearchDownloadedTracksUseCase,
+    private val getDownloadedTracksUseCase: GetDownloadedTracksUseCase
 ) : ViewModel(), TracksViewModel {
 
     private val _tracks = MutableStateFlow<List<TrackInfo>>(emptyList())
@@ -25,7 +29,7 @@ private val repository: DownloadedTracksRepository
     override suspend fun loadTracks() {
         viewModelScope.launch {
             try {
-                repository.getDownloadedTracks().collect {
+                getDownloadedTracksUseCase().collect {
                     Log.d("loadTracks from memory", it.toString())
                     _tracks.value = it
                 }
@@ -40,7 +44,7 @@ private val repository: DownloadedTracksRepository
     override suspend fun searchTracks(query: String) {
         viewModelScope.launch {
             try {
-                repository.searchDownloadedTracks(query).collect {
+                searchDownloadedTracksUseCase(query).collect {
                     if (it.isNotEmpty()) {
                         Log.d("searchTracks from memory", it.toString())
                         _tracks.value = it
@@ -57,13 +61,13 @@ private val repository: DownloadedTracksRepository
 
     fun downloadTrack(track: TrackInfo) {
         viewModelScope.launch {
-            repository.downloadTrack(track)
+            downloadTrackUseCase(track)
         }
     }
 
     fun deleteTrack(trackId: Long) {
         viewModelScope.launch {
-            repository.deleteDownloadedTrack(trackId)
+            deleteDownloadedTrackUseCase(trackId)
         }
     }
 

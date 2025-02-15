@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avito.domain.model.TrackInfo
+import com.avito.domain.usecases.DeleteDownloadedTrackUseCase
+import com.avito.domain.usecases.DownloadTrackUseCase
 import com.avito.domain.usecases.GetApiTopTracksUseCase
 import com.avito.domain.usecases.SearchApiTracksUseCase
 import com.avito.tracks.TracksViewModel
@@ -15,6 +17,8 @@ import kotlinx.coroutines.launch
 class ApiTracksViewModel(
     private val getChartTracksUseCase: GetApiTopTracksUseCase,
     private val searchApiTracksUseCase: SearchApiTracksUseCase,
+    private val downloadTrackUseCase: DownloadTrackUseCase,
+    private val deleteDownloadedTrackUseCase: DeleteDownloadedTrackUseCase,
 ) : ViewModel(), TracksViewModel {
 
     private val _tracks = MutableStateFlow<List<TrackInfo>>(emptyList())
@@ -54,5 +58,23 @@ class ApiTracksViewModel(
             }
         }
     }
+
+    override suspend fun downloadTrack(track: TrackInfo) {
+        viewModelScope.launch {
+            Log.d("ApiTracksViewModel", "trackInfo до загрузки ${track.isDownloaded}")
+            downloadTrackUseCase(track)
+            Log.d("ApiTracksViewModel", "trackInfo после загрузки ${track.isDownloaded}")
+            loadTracks()
+            Log.d("ApiTracksViewModel", "trackInfo после загрузки и обновления ${track.isDownloaded}")
+        }
+    }
+
+    override suspend fun deleteTrack(trackId: Long) {
+        viewModelScope.launch {
+            deleteDownloadedTrackUseCase(trackId)
+            loadTracks()
+        }
+    }
+
 
 }

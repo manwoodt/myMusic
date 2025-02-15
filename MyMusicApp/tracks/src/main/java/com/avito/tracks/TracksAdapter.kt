@@ -13,16 +13,15 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 
 class TracksAdapter(
-    private val onDownloadClick: (TrackInfo) -> Unit,
-    private val onDeleteClick: (Long) -> Unit,
+    private val trackActionListener: TrackActionListener
 ) : RecyclerView.Adapter<TracksAdapter.TrackInfoViewHolder>() {
 
     //TODO добавить обработку клика
     private val trackList = mutableListOf<TrackInfo>()
 
     class TrackInfoViewHolder(
-        private val binding: ItemTrackBinding, private val onDownloadClick: (TrackInfo) -> Unit,
-        private val onDeleteClick: (Long) -> Unit,
+        private val binding: ItemTrackBinding,
+        private val trackActionListener: TrackActionListener
     ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(trackInfo: TrackInfo) {
@@ -51,11 +50,15 @@ class TracksAdapter(
             }
 
             binding.btnDownload.setOnClickListener {
-                onDownloadClick(trackInfo)
+                Log.d("onDownloadClick", "Загрузка началась")
+                Log.d("TracksAdapter", "trackInfo до загрузки ${trackInfo.isDownloaded}")
+                trackActionListener.onDownloadClick(trackInfo)
+                Log.d("onDownloadClick", "Загрузка закончилась")
+                Log.d("TracksAdapter", "trackInfo после загрузки ${trackInfo.isDownloaded}")
             }
 
-            binding.btnDownload.setOnClickListener {
-                onDeleteClick(trackInfo.id)
+            binding.btnDelete.setOnClickListener {
+                trackActionListener.onDeleteClick(trackInfo.id)
             }
 
         }
@@ -63,7 +66,7 @@ class TracksAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackInfoViewHolder {
         val binding = ItemTrackBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TrackInfoViewHolder(binding,onDownloadClick,onDeleteClick)
+        return TrackInfoViewHolder(binding, trackActionListener)
     }
 
     override fun getItemCount(): Int {

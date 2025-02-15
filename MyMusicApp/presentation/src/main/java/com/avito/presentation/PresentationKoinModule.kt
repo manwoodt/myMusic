@@ -6,6 +6,6 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val presentationModule = module {
-    viewModel { ApiTracksViewModel(get(), get()) }
-    viewModel { DownloadedTracksViewModel(get()) }
+    viewModel { ApiTracksViewModel(get(), get(), get(), get()) }
+    viewModel { DownloadedTracksViewModel(get(), get(), get(), get()) }
 }

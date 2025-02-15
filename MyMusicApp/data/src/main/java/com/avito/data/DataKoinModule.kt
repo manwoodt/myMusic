@@ -31,6 +31,7 @@ val dataModule = module {
             DownloadedTracksDatabase::class.java,
             "downloaded_tracks_database"
         )
+            .fallbackToDestructiveMigration()
             .build()
     }
 

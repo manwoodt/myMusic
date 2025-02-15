@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avito.domain.model.TrackInfo
-import com.avito.domain.repository.DownloadedTracksRepository
 import com.avito.domain.usecases.DeleteDownloadedTrackUseCase
 import com.avito.domain.usecases.DownloadTrackUseCase
 import com.avito.domain.usecases.GetDownloadedTracksUseCase
@@ -24,6 +23,9 @@ class DownloadedTracksViewModel(
 
     private val _tracks = MutableStateFlow<List<TrackInfo>>(emptyList())
     override val tracks: StateFlow<List<TrackInfo>> = _tracks.asStateFlow()
+
+
+
 
     // загрузка песен из памяти телефона
     override suspend fun loadTracks() {
@@ -59,15 +61,17 @@ class DownloadedTracksViewModel(
         }
     }
 
-    fun downloadTrack(track: TrackInfo) {
+    override suspend fun downloadTrack(track: TrackInfo) {
         viewModelScope.launch {
             downloadTrackUseCase(track)
+            loadTracks()
         }
     }
 
-    fun deleteTrack(trackId: Long) {
+    override suspend fun deleteTrack(trackId: Long) {
         viewModelScope.launch {
             deleteDownloadedTrackUseCase(trackId)
+            loadTracks()
         }
     }
 

@@ -9,16 +9,18 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.avito.domain.model.TrackInfo
 import com.avito.tracks.databinding.FragmentTracksBinding
 import kotlinx.coroutines.launch
 
-abstract class TracksFragment : Fragment() {
+abstract class TracksFragment : Fragment(), TrackActionListener {
 
     protected abstract val viewModel: TracksViewModel
     protected lateinit var adapter: TracksAdapter
 
     private var _binding: FragmentTracksBinding? = null
     protected val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +32,9 @@ abstract class TracksFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setupRecyclerView()
+
         lifecycleScope.launch {
             viewModel.loadTracks()
             viewModel.tracks.collect{newTracks->
@@ -71,7 +75,7 @@ abstract class TracksFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = TracksAdapter(TODO(), TODO())
+        adapter = TracksAdapter(this)
         binding.rvTracks.layoutManager = LinearLayoutManager(requireContext())
         binding.rvTracks.adapter = adapter
     }
@@ -79,5 +83,21 @@ abstract class TracksFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+
+    // Реализация методов TrackActionListener
+    override fun onDownloadClick(track: TrackInfo) {
+        lifecycleScope.launch {
+            viewModel.downloadTrack(track)
+
+
+        }
+    }
+
+    override fun onDeleteClick(trackId: Long) {
+        lifecycleScope.launch {
+            viewModel.deleteTrack(trackId)
+        }
     }
 }

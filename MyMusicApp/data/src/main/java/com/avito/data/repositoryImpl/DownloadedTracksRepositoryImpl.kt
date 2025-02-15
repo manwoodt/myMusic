@@ -22,14 +22,20 @@ class DownloadedTracksRepositoryImpl(
 
 
     override suspend fun downloadTrack(track: TrackInfo)  {
-        val filePath = savePreviewToFile(track)
-        dao.insertDownloadedTrack(track.toEntity(filePath))
+        withContext(Dispatchers.IO) {
+            val filePath = savePreviewToFile(track)
+            Log.d("DownloadedTracksRepositoryImpl", "trackInfo до загрузки ${track.isDownloaded}")
+            dao.insertDownloadedTrack(track.toEntity(filePath))
+            Log.d("DownloadedTracksRepositoryImpl", "trackInfo после загрузки ${track.isDownloaded}")
+        }
     }
 
     override suspend fun deleteDownloadedTrack(trackId: Long) {
-        val track = dao.getDownloadedTrackById(trackId)
-        track?.filePath?.let { deletePreviewFile(it) }
-        dao.deleteDownloadedTrack(trackId)
+        withContext(Dispatchers.IO) {
+            val track = dao.getDownloadedTrackById(trackId)
+            track?.filePath?.let { deletePreviewFile(it) }
+            dao.deleteDownloadedTrack(trackId)
+        }
     }
 
     override suspend fun searchDownloadedTracks(query: String): Flow<List<TrackInfo>> {

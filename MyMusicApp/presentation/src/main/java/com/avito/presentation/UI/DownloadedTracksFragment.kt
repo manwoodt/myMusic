@@ -1,9 +1,9 @@
 package com.avito.presentation.UI
 
+import com.avito.presentation.viewmodels.DownloadedTracksViewModel
 import com.avito.tracks.TracksFragment
-import com.avito.tracks.TracksViewModel
 
 class DownloadedTracksFragment() : TracksFragment() {
-    override val viewModel: TracksViewModel = TODO()
+    override val viewModel: DownloadedTracksViewModel by viewModel()
 
 }

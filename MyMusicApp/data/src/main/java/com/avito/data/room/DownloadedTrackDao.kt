@@ -23,6 +23,6 @@ interface DownloadedTrackDao {
     suspend fun deleteDownloadedTrack(trackId:Long)
 
     @Query("SELECT * FROM downloaded_tracks WHERE title LIKE :query OR artist LIKE :query")
-    suspend fun searchDownloadedTracks(query: String): Flow<List<DownloadedTrackEntity>>
+    fun searchDownloadedTracks(query: String): Flow<List<DownloadedTrackEntity>>
 
 }

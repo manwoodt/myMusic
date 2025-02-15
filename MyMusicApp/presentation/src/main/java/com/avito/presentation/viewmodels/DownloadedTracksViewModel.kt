@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avito.domain.model.TrackInfo
 import com.avito.domain.usecases.DeleteDownloadedTrackUseCase
-import com.avito.domain.usecases.DownloadTrackUseCase
 import com.avito.domain.usecases.GetDownloadedTracksUseCase
 import com.avito.domain.usecases.SearchDownloadedTracksUseCase
 import com.avito.tracks.TracksViewModel
@@ -15,7 +14,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class DownloadedTracksViewModel(
-    private val downloadTrackUseCase: DownloadTrackUseCase,
     private val deleteDownloadedTrackUseCase: DeleteDownloadedTrackUseCase,
     private val searchDownloadedTracksUseCase: SearchDownloadedTracksUseCase,
     private val getDownloadedTracksUseCase: GetDownloadedTracksUseCase,

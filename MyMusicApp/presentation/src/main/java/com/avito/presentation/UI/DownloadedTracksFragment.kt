@@ -6,5 +6,5 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DownloadedTracksFragment() : TracksFragment() {
     override val viewModel: DownloadedTracksViewModel by viewModel()
-    override val isDownloadScreenForIcon: Boolean = true
+    override val isDownloadedScreen: Boolean = true
 }

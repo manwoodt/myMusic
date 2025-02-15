@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avito.domain.model.TrackInfo
-import com.avito.domain.usecases.DeleteDownloadedTrackUseCase
 import com.avito.domain.usecases.DownloadTrackUseCase
 import com.avito.domain.usecases.GetApiTopTracksUseCase
 import com.avito.domain.usecases.SearchApiTracksUseCase
@@ -17,8 +16,7 @@ import kotlinx.coroutines.launch
 class ApiTracksViewModel(
     private val getChartTracksUseCase: GetApiTopTracksUseCase,
     private val searchApiTracksUseCase: SearchApiTracksUseCase,
-    private val downloadTrackUseCase: DownloadTrackUseCase,
-    private val deleteDownloadedTrackUseCase: DeleteDownloadedTrackUseCase,
+    private val downloadTrackUseCase: DownloadTrackUseCase
 ) : ViewModel(), TracksViewModel {
 
     private val _tracks = MutableStateFlow<List<TrackInfo>>(emptyList())

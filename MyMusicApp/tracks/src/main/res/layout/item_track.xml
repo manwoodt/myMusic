@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:padding="8dp">
 
@@ -9,7 +10,8 @@
         android:id="@+id/ivTrackImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="8dp" />
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/cover_track" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -21,30 +23,39 @@
             android:id="@+id/tvTrackTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Track Title"
+            tools:text="Track Title"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvArtistName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Artist Name" />
+            tools:text="Artist Name" />
 
         <TextView
             android:id="@+id/tvAlbumTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Album Title" />
+            tools:text="Album Title" />
 
     </LinearLayout>
+
     <ImageButton
-        android:id="@+id/btn_actionWithTrack"
+        android:id="@+id/btnDownload"
         android:layout_width="50dp"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
-        android:contentDescription="@string/Download_or_delete_track"
+android:src="@drawable/ic_download"
+        android:contentDescription="@string/Download_track"/>
 
-        />
+    <ImageButton
+        android:id="@+id/btnDelete"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_delete"
+        android:contentDescription="@string/Delete_track"
+        android:visibility="gone" />
 
 
 </LinearLayout>

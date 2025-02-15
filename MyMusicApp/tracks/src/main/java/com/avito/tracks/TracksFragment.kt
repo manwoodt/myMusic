@@ -20,7 +20,7 @@ abstract class TracksFragment : Fragment() {
     private var _binding: FragmentTracksBinding? = null
     protected val binding get() = _binding!!
 
-    protected abstract val isDownloadScreenForIcon: Boolean
+    protected abstract val isDownloadedScreen: Boolean
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +37,7 @@ abstract class TracksFragment : Fragment() {
 
         lifecycleScope.launch {
             viewModel.loadTracks()
-            viewModel.tracks.collect{newTracks->
+            viewModel.tracks.collect { newTracks ->
                 Log.d("TracksFragment", "Получены новые треки: ${newTracks.size}")
                 adapter.submitList(newTracks)
             }
@@ -45,17 +45,15 @@ abstract class TracksFragment : Fragment() {
         setupSearchView()
     }
 
-    private fun setupSearchView(){
+    private fun setupSearchView() {
         binding.svTracks.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
-                // Этот метод вызывается при каждом изменении текста
                 if (!newText.isNullOrEmpty()) {
                     lifecycleScope.launch {
                         Log.d("setupSearchButton", "Текст изменился : $newText")
                         viewModel.searchTracks(newText)
                     }
-                }
-                else{
+                } else {
                     lifecycleScope.launch {
                         viewModel.loadTracks()
                     }
@@ -64,7 +62,6 @@ abstract class TracksFragment : Fragment() {
             }
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                // Этот метод вызывается при нажатии кнопки поиска (или клавиши Enter)
                 if (!query.isNullOrEmpty()) {
                     lifecycleScope.launch {
                         Log.d("setupSearchButton", "Запрос: $query")
@@ -75,12 +72,10 @@ abstract class TracksFragment : Fragment() {
             }
         })
 
-
-
     }
 
     private fun setupRecyclerView() {
-        adapter = TracksAdapter(isDownloadScreenForIcon){
+        adapter = TracksAdapter(isDownloadedScreen) {
             lifecycleScope.launch {
                 (viewModel.actionWithTrack(it))
             }

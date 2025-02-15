@@ -2,6 +2,7 @@ package com.avito.tracks
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.avito.domain.model.TrackInfo
@@ -19,7 +20,7 @@ class TracksAdapter(
 
     class TrackInfoViewHolder(
         private val binding: ItemTrackBinding,
-        private val isDownloadScreenForIcon: Boolean,
+        private val isDownloadedScreen: Boolean,
         private val actionWithTrack: (trackInfo: TrackInfo) -> Unit,
     ) :
         RecyclerView.ViewHolder(binding.root) {
@@ -39,16 +40,19 @@ class TracksAdapter(
             binding.tvAlbumTitle.text = trackInfo.album
             binding.tvArtistName.text = trackInfo.artist
 
-            val buttonIconRes = if(isDownloadScreenForIcon) R.drawable.ic_delete
-            else R.drawable.ic_download
-
-            binding.btnActionWithTrack.setImageResource(buttonIconRes)
-
-
-            binding.btnActionWithTrack.setOnClickListener {
-                actionWithTrack(trackInfo)
+            if (isDownloadedScreen) {
+                binding.btnDownload.visibility = View.GONE
+                binding.btnDelete.visibility = View.VISIBLE
+                binding.btnDelete.setOnClickListener {
+                    actionWithTrack(trackInfo)
+                }
+            } else {
+                binding.btnDownload.visibility = View.VISIBLE
+                binding.btnDelete.visibility = View.GONE
+                binding.btnDownload.setOnClickListener {
+                    actionWithTrack(trackInfo)
+                }
             }
-
         }
     }
 

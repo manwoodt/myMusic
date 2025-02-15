@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Download_or_delete_track">Скачать/удалить трек</string>
+    <string name="Delete_track">Удалить трек</string>
+    <string name="Download_track">Скачать трек</string>
+    <string name="cover_track">Обложка трека</string>
 </resources>

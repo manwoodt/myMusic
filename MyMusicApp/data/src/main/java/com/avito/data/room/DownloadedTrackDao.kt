@@ -11,18 +11,19 @@ import kotlinx.coroutines.flow.Flow
 interface DownloadedTrackDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertDownloadedTrack(downloadedTrack:DownloadedTrackEntity)
+    suspend fun insertDownloadedTrack(downloadedTrack: DownloadedTrackEntity)
 
     @Query("SELECT * from downloaded_tracks")
     fun getAllDownloadedTracks(): Flow<List<DownloadedTrackEntity>>
 
     @Query("SELECT * from downloaded_tracks WHERE id = :trackId")
-    fun getDownloadedTrackById(trackId:Long): DownloadedTrackEntity?
+    fun getDownloadedTrackById(trackId: Long): DownloadedTrackEntity?
 
     @Query("DELETE FROM downloaded_tracks WHERE id = :trackId")
-    suspend fun deleteDownloadedTrack(trackId:Long)
+    suspend fun deleteDownloadedTrack(trackId: Long)
 
-    @Query("SELECT * FROM downloaded_tracks WHERE title LIKE :query OR artist LIKE :query")
+    @Query("SELECT * FROM downloaded_tracks WHERE title LIKE '%' || :query " +
+            "|| '%' OR artist LIKE '%' || :query || '%'")
     fun searchDownloadedTracks(query: String): Flow<List<DownloadedTrackEntity>>
 
 }

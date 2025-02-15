@@ -55,6 +55,11 @@ abstract class TracksFragment : Fragment(), TrackActionListener {
                         viewModel.searchTracks(newText)
                     }
                 }
+                else{
+                    lifecycleScope.launch {
+                        viewModel.loadTracks()
+                    }
+                }
                 return true
             }
 

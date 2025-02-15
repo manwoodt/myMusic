@@ -1,7 +1,6 @@
 package com.avito.presentation.viewmodels
 
 import android.util.Log
-import androidx.collection.emptyLongSet
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avito.domain.model.TrackInfo

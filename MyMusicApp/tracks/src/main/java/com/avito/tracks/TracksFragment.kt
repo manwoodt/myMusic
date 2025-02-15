@@ -71,7 +71,7 @@ abstract class TracksFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = TracksAdapter()
+        adapter = TracksAdapter(TODO(), TODO())
         binding.rvTracks.layoutManager = LinearLayoutManager(requireContext())
         binding.rvTracks.adapter = adapter
     }

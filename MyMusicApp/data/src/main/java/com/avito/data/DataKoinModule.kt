@@ -37,5 +37,4 @@ val dataModule = module {
     single<DownloadedTrackDao> { get<DownloadedTracksDatabase>().downloadedTracksDao() }
     single<ApiTracksRepository> { ApiTracksRepositoryImpl(get()) }
     single<DownloadedTracksRepository> {DownloadedTracksRepositoryImpl(get(),get()) }
-    single { androidContext() }
 }

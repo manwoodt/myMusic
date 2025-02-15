@@ -11,5 +11,6 @@ data class DownloadedTrackEntity(
     val artist: String,
     val album: String,
     val cover:String,
-    val filePath:String? = null
+    val filePath:String? = null,
+    val isDownloaded:Boolean = true
 )

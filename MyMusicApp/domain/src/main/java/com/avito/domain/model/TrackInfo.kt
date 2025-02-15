@@ -6,7 +6,8 @@ data class TrackInfo(
     val preview: String,
     val artist: String,
     val album: String,
-    val cover:String
+    val cover:String,
+    val isDownloaded:Boolean = false
 )
 
 

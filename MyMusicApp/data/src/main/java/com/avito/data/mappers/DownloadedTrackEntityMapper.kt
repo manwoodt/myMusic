@@ -24,6 +24,7 @@ fun TrackInfo.toEntity(songPath:String?): DownloadedTrackEntity {
         cover = cover,
         artist = artist,
         album = album,
-        filePath = songPath
+        filePath = songPath,
+        isDownloaded = isDownloaded
     )
 }

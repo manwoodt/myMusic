@@ -16,7 +16,7 @@ fun DownloadedTrackEntity.toDomain(): TrackInfo {
 }
 
 
-fun TrackInfo.toEntity(): DownloadedTrackEntity {
+fun TrackInfo.toEntity(songPath:String?): DownloadedTrackEntity {
     return DownloadedTrackEntity(
         id = id,
         title= title,
@@ -24,6 +24,6 @@ fun TrackInfo.toEntity(): DownloadedTrackEntity {
         cover = cover,
         artist = artist,
         album = album,
-       // TODO filePath =
+        filePath = songPath
     )
 }

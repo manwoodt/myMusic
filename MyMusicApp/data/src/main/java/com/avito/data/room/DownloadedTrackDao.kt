@@ -16,10 +16,13 @@ interface DownloadedTrackDao {
     @Query("SELECT * from downloaded_tracks")
     fun getAllDownloadedTracks(): Flow<List<DownloadedTrackEntity>>
 
+    @Query("SELECT * from downloaded_tracks WHERE id = :trackId")
+    fun getDownloadedTrackById(trackId:Long): DownloadedTrackEntity?
+
     @Query("DELETE FROM downloaded_tracks WHERE id = :trackId")
     suspend fun deleteDownloadedTrack(trackId:Long)
 
     @Query("SELECT * FROM downloaded_tracks WHERE title LIKE :query OR artist LIKE :query")
-    suspend fun searchDownloadedTracks(query: String): List<DownloadedTrackEntity>
+    suspend fun searchDownloadedTracks(query: String): Flow<List<DownloadedTrackEntity>>
 
 }

@@ -29,7 +29,6 @@ class ApiTracksViewModel(
         }
     }
 
-    // загрузка топа песен из интернета
     override suspend fun loadTracks() {
         viewModelScope.launch {
             try {
@@ -44,7 +43,6 @@ class ApiTracksViewModel(
         }
     }
 
-    // поиск в интернете
     override suspend fun searchTracks(query: String) {
         viewModelScope.launch {
             try {

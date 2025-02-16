@@ -75,14 +75,7 @@ class PlaybackFragment : Fragment() {
             }
         }
 
-        // Обновление текущего времени в UI
-//        lifecycleScope.launch {
-//            while (true) {
-//                delay(1000) // Обновляем каждую секунду
-//                binding.currentTime.text = formatTime(viewModel.progress.value)
-//            }
-//        }
-//
+
         lifecycleScope.launch {
             viewModel.duration.collect { duration ->
                 Log.d("trackDuration", duration.toString())
@@ -112,7 +105,6 @@ class PlaybackFragment : Fragment() {
         })
     }
 
-    // Форматируем время в формате mm:ss
     private fun formatTime(ms: Int): String {
         val minutes = ms / 60000
         val seconds = (ms % 60000) / 1000

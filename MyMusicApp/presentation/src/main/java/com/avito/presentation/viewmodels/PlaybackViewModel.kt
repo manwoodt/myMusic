@@ -8,7 +8,6 @@ import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.avito.domain.model.TrackInfo
 import com.avito.domain.usecases.GetTrackByIdUseCase
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,59 +25,16 @@ class PlaybackViewModel(
     private val _playbackState = MutableStateFlow(false)
     val playbackState: StateFlow<Boolean> get() = _playbackState
 
-    private val _progress = MutableStateFlow(0) // Progress for seeking
+    private val _progress = MutableStateFlow(0)
     val progress: StateFlow<Int> = _progress
 
 
-    private val _duration = MutableStateFlow(0) // Длительность трека
+    private val _duration = MutableStateFlow(0)
     val duration: StateFlow<Int> = _duration
 
 
-    private var progressTimer: Job? = null
-
-//    init {
-//        // Обработка изменений состояния воспроизведения
-//        player.addListener(object : Player.Listener {
-//            override fun onPlaybackStateChanged(state: Int) {
-//                super.onPlaybackStateChanged(state)
-//                if (state == Player.STATE_READY) {
-//                    _duration.value = player.duration.toInt()
-//                }
-//                _playbackState.value = player.isPlaying
-//                if (player.isPlaying) {
-//                    startProgressTimer()
-//                } else {
-//                    stopProgressTimer()
-//                }
-//            }
-//
-//            // Если требуется, можно обработать другие события
-//            override fun onIsPlayingChanged(isPlaying: Boolean) {
-//                super.onIsPlayingChanged(isPlaying)
-//                _playbackState.value = isPlaying
-//            }
-//
-//        })
-//    }
-//
-//    private fun startProgressTimer() {
-//        // Запускаем таймер для отслеживания прогресса каждую секунду
-//        progressTimer = viewModelScope.launch {
-//            while (true) {
-//                delay(1000) // Каждую секунду
-//                _progress.value = player.currentPosition.toInt()
-//            }
-//        }
-//    }
-//
-//    private fun stopProgressTimer() {
-//        progressTimer?.cancel() // Останавливаем таймер
-//        progressTimer = null
-//    }
-
 
     init {
-        // Подписка на изменения длительности трека
         player.addListener(object : Player.Listener {
             override fun onPlaybackStateChanged(playbackState: Int) {
                 if (playbackState == Player.STATE_READY) {
@@ -88,7 +44,6 @@ class PlaybackViewModel(
             }
         })
 
-        // Запускаем обновление прогресса каждую секунду
         viewModelScope.launch {
             while (isActive) {
                 _progress.value = player.currentPosition.toInt()
@@ -103,7 +58,7 @@ class PlaybackViewModel(
             val track = getTrackByIdUseCase(id)
             Log.d("PlaybackViewModel", "Track loaded: $track")
             _trackInfo.value = track
-            track?.let {
+            track.let {
                 player.stop()
                 player.clearMediaItems()
                 val mediaItem = MediaItem.fromUri(it.preview)
@@ -114,7 +69,6 @@ class PlaybackViewModel(
                 Log.d("PlaybackViewModel", "Calling player.play() now!")
                 _duration.value = player.duration.toInt()
                 player.play()
-                //  _playbackState.value = true
             }
         }
     }

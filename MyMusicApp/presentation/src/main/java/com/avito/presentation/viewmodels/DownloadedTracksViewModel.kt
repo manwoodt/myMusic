@@ -23,7 +23,6 @@ class DownloadedTracksViewModel(
     override val tracks: StateFlow<List<TrackInfo>> = _tracks.asStateFlow()
 
 
-    // загрузка песен из памяти телефона
     override suspend fun loadTracks() {
         viewModelScope.launch {
             try {
@@ -38,7 +37,6 @@ class DownloadedTracksViewModel(
         }
     }
 
-    // поиск в памяти телефона
     override suspend fun searchTracks(query: String) {
         viewModelScope.launch {
             try {

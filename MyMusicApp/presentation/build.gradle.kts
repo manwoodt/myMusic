@@ -44,6 +44,9 @@ dependencies {
     implementation (libs.koin.core)
     implementation(libs.koin.android)
 
+    implementation (libs.androidx.media3.session)
+    implementation(libs.androidx.media3.exoplayer)
+    
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 
@@ -55,7 +58,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.glide)
-    implementation(libs.androidx.media3.exoplayer)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

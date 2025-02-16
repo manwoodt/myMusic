@@ -108,21 +108,12 @@
             android:src="@drawable/ic_prev"/>
 
         <ImageButton
-            android:id="@+id/pauseButton"
+            android:id="@+id/playPauseButton"
             android:layout_width="64dp"
             android:layout_height="64dp"
-
             android:contentDescription="@string/play_pause"
             android:src="@drawable/ic_stop"/>
 
-<!--        TODO заменить contentDescription-->
-        <ImageButton
-            android:id="@+id/playButton"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:contentDescription="@string/play_pause"
-            android:src="@drawable/ic_play"
-            android:visibility="gone"/>
 
         <ImageButton
             android:id="@+id/nextButton"

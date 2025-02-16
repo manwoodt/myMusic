@@ -7,7 +7,7 @@ import android.util.Log
 class MediaPlayerManager {
 
     private var mediaPlayer: MediaPlayer? = null
-    private var isPrepared = false
+    var isPrepared = false
     private var trackUrl: String? = null
     private var currentPosition = 0
 
@@ -23,9 +23,9 @@ class MediaPlayerManager {
             setOnPreparedListener {
                 Log.d("MediaPlayerManager", "Трек подготовлен к воспроизведению")
                 isPrepared = true
-                if (mediaPlayer?.isPlaying == false) { // Проверяем, не играет ли плеер
-                    mediaPlayer?.start() // Автоматически запускаем после подготовки, если не играет
-                }
+//                if (mediaPlayer?.isPlaying == false) { // Проверяем, не играет ли плеер
+//                    mediaPlayer?.start() // Автоматически запускаем после подготовки, если не играет
+//                }
             }
             setOnCompletionListener {
                 Log.d("MediaPlayerManager", "Трек завершён")
@@ -55,7 +55,10 @@ class MediaPlayerManager {
             mediaPlayer?.seekTo(currentPosition)
             mediaPlayer?.start()
         }
-        onPrepared()
+        mediaPlayer?.setOnPreparedListener {
+            isPrepared = true
+            onPrepared() // Уведомление о готовности плеера
+        }
         Log.d("MediaPlayerManager", "Тот же трек, ничего не делаем")
     }
 
@@ -73,13 +76,13 @@ class MediaPlayerManager {
         }
     }
 
-    fun stop() {
-        if (isPrepared && mediaPlayer != null) {
-            mediaPlayer?.stop()
-            mediaPlayer?.reset()
-            isPrepared = false
-        }
-    }
+//    fun stop() {
+//        if (isPrepared && mediaPlayer != null) {
+//            mediaPlayer?.stop()
+//            mediaPlayer?.reset()
+//            isPrepared = false
+//        }
+//    }
 
     fun release() {
         mediaPlayer?.release()

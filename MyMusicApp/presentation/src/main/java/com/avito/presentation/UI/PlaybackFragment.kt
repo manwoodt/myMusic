@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.avito.presentation.databinding.FragmentPlaybackBinding
@@ -28,8 +29,9 @@ class PlaybackFragment : Fragment() {
     ): View {
         _binding = FragmentPlaybackBinding.inflate(inflater, container, false)
         val trackId = args.trackId
-      //  Log.d()
+        Log.d("PlaybackFragment", "Загрузка трека началась")
         viewModel.loadTrackbyId(trackId)
+        Log.d("PlaybackFragment", "Загрузка трека закончилась")
         return binding.root
     }
 
@@ -51,27 +53,64 @@ class PlaybackFragment : Fragment() {
             }
         }
 
-//        viewModel.isPlaying.collect { isPlaying ->
-//
-//            lifecycleScope.launch {
-//                if (isPlaying)
-//                    viewModel.pause()
-//                else {
-//                    val track = viewModel.currentTrack.value?.preview
-//                    if (track != null) {
-//                        viewModel.play(track)
-//                    }
-//                }
-//            }
-//
-//
-//        }
-
-        binding.playPauseButton.setOnClickListener {
-            viewModel.stop()
+        lifecycleScope.launch {
+            viewModel.currentPosition.collect { position ->
+                val minutes = position / 60000
+                val seconds = (position % 60000) / 1000
+                binding.currentTime.text = String.format("%02d:%02d", minutes, seconds)
+            }
         }
 
+        lifecycleScope.launch {
+            viewModel.duration.collect { duration ->
+                val minutes = duration / 60000
+                val seconds = (duration % 60000) / 1000
+                binding.trackDuration.text = String.format("%02d:%02d", minutes, seconds)
+            }
+        }
 
+        lifecycleScope.launch {
+            viewModel.progress.collect { progress ->
+                binding.seekBar.progress = progress
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.isPlaying.collect { isPlaying ->
+                if (isPlaying) {
+                    binding.playButton.visibility = View.GONE
+                    binding.pauseButton.visibility = View.VISIBLE
+                } else {
+                    binding.playButton.visibility = View.VISIBLE
+                    binding.pauseButton.visibility = View.GONE
+                }
+            }
+        }
+
+        binding.playButton.setOnClickListener {
+            viewModel.play(viewModel.currentTrack.value?.preview ?: "")
+        }
+
+        binding.pauseButton.setOnClickListener {
+            viewModel.pause()
+        }
+
+        binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    // Перематываем трек на указанную позицию
+                    viewModel.seekTo(progress)
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                // Этот метод можно оставить пустым, если не требуется
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                // Этот метод можно оставить пустым, если не требуется
+            }
+        })
     }
 
 

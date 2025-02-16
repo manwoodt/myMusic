@@ -5,7 +5,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.avito.presentation.TracksNavigation
 import com.avito.presentation.UI.ApiTracksFragmentDirections
 import com.google.android.material.bottomnavigation.BottomNavigationView
 

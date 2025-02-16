@@ -10,7 +10,7 @@
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:contentDescription="@string/cover_track"
-
+    android:src="@drawable/ic_not_downloaded"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/tv_trackTitle"
@@ -37,6 +37,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="Artist Name" />
+
+
+    <TextView
+        android:id="@+id/tv_albumName"
+        style="@style/TextViewMyStyle"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_artistName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Album Name" />
 
     <SeekBar
         android:id="@+id/seekBar"

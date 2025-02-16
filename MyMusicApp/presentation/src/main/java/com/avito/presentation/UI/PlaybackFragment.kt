@@ -13,6 +13,7 @@ import com.avito.presentation.R
 import com.avito.presentation.databinding.FragmentPlaybackBinding
 import com.avito.presentation.viewmodels.PlaybackViewModel
 import com.bumptech.glide.Glide
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -72,6 +73,21 @@ class PlaybackFragment : Fragment() {
             }
         }
 
+        // Обновление текущего времени в UI
+        lifecycleScope.launch {
+            while (true) {
+                delay(1000) // Обновляем каждую секунду
+                binding.currentTime.text = formatTime(viewModel.progress.value)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.duration.collect { duration ->
+                Log.d("trackDuration", duration.toString())
+                binding.trackDuration.text = formatTime(duration)
+            }
+        }
+
 
         binding.playPauseButton.setOnClickListener {
             viewModel.playPause()
@@ -90,6 +106,13 @@ class PlaybackFragment : Fragment() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
             }
         })
+    }
+
+    // Форматируем время в формате mm:ss
+    private fun formatTime(ms: Int): String {
+        val minutes = ms / 60000
+        val seconds = (ms % 60000) / 1000
+        return String.format("%02d:%02d", minutes, seconds)
     }
 
     override fun onDestroy() {

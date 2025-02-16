@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 class TracksAdapter(
     private val isDownloadScreenForIcon: Boolean,
     private val actionWithTrack: (trackInfo: TrackInfo) -> Unit,
+    private val onTrackClick: (trackId: Long) -> Unit
 ) : RecyclerView.Adapter<TracksAdapter.TrackInfoViewHolder>() {
 
     //TODO добавить обработку клика
@@ -22,6 +23,7 @@ class TracksAdapter(
         private val binding: ItemTrackBinding,
         private val isDownloadedScreen: Boolean,
         private val actionWithTrack: (trackInfo: TrackInfo) -> Unit,
+        private val onTrackClick: (trackId: Long) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(trackInfo: TrackInfo) {
@@ -53,12 +55,15 @@ class TracksAdapter(
                     actionWithTrack(trackInfo)
                 }
             }
+
+            itemView.setOnClickListener{ onTrackClick(trackInfo.id)}
+
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackInfoViewHolder {
         val binding = ItemTrackBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TrackInfoViewHolder(binding,isDownloadScreenForIcon, actionWithTrack)
+        return TrackInfoViewHolder(binding,isDownloadScreenForIcon, actionWithTrack,onTrackClick)
     }
 
     override fun getItemCount(): Int {

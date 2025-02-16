@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.avito.tracks.databinding.FragmentTracksBinding
 import kotlinx.coroutines.launch
@@ -21,6 +22,9 @@ abstract class TracksFragment : Fragment() {
     protected val binding get() = _binding!!
 
     protected abstract val isDownloadedScreen: Boolean
+
+    protected abstract val  onTrackClicked: ((Long) -> Unit)
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,14 +79,20 @@ abstract class TracksFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = TracksAdapter(isDownloadedScreen) {
-            lifecycleScope.launch {
-                (viewModel.actionWithTrack(it))
-            }
-        }
+        adapter = TracksAdapter(
+            isDownloadedScreen,
+            actionWithTrack = {
+                lifecycleScope.launch {
+                    (viewModel.actionWithTrack(it))
+                }
+            },
+            onTrackClick = { trackId ->
+                onTrackClicked?.invoke(trackId)
+            })
         binding.rvTracks.layoutManager = LinearLayoutManager(requireContext())
         binding.rvTracks.adapter = adapter
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -12,11 +12,12 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class PlaybackViewModel(
     private val getTrackByIdUseCase: GetTrackByIdUseCase,
-    private val player: ExoPlayer
+    private val player: ExoPlayer,
 ) : ViewModel() {
 
     private val _trackInfo = MutableStateFlow<TrackInfo?>(null)
@@ -35,43 +36,65 @@ class PlaybackViewModel(
 
     private var progressTimer: Job? = null
 
+//    init {
+//        // Обработка изменений состояния воспроизведения
+//        player.addListener(object : Player.Listener {
+//            override fun onPlaybackStateChanged(state: Int) {
+//                super.onPlaybackStateChanged(state)
+//                if (state == Player.STATE_READY) {
+//                    _duration.value = player.duration.toInt()
+//                }
+//                _playbackState.value = player.isPlaying
+//                if (player.isPlaying) {
+//                    startProgressTimer()
+//                } else {
+//                    stopProgressTimer()
+//                }
+//            }
+//
+//            // Если требуется, можно обработать другие события
+//            override fun onIsPlayingChanged(isPlaying: Boolean) {
+//                super.onIsPlayingChanged(isPlaying)
+//                _playbackState.value = isPlaying
+//            }
+//
+//        })
+//    }
+//
+//    private fun startProgressTimer() {
+//        // Запускаем таймер для отслеживания прогресса каждую секунду
+//        progressTimer = viewModelScope.launch {
+//            while (true) {
+//                delay(1000) // Каждую секунду
+//                _progress.value = player.currentPosition.toInt()
+//            }
+//        }
+//    }
+//
+//    private fun stopProgressTimer() {
+//        progressTimer?.cancel() // Останавливаем таймер
+//        progressTimer = null
+//    }
+
+
     init {
-        // Обработка изменений состояния воспроизведения
+        // Подписка на изменения длительности трека
         player.addListener(object : Player.Listener {
-            override fun onPlaybackStateChanged(state: Int) {
-                super.onPlaybackStateChanged(state)
-                if (state == Player.STATE_READY) {
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                if (playbackState == Player.STATE_READY) {
                     _duration.value = player.duration.toInt()
                 }
                 _playbackState.value = player.isPlaying
-                if (player.isPlaying) {
-                    startProgressTimer()
-                } else {
-                    stopProgressTimer()
-                }
-            }
-
-            // Если требуется, можно обработать другие события
-            override fun onIsPlayingChanged(isPlaying: Boolean) {
-                super.onIsPlayingChanged(isPlaying)
-                _playbackState.value = isPlaying
             }
         })
-    }
 
-    private fun startProgressTimer() {
-        // Запускаем таймер для отслеживания прогресса каждую секунду
-        progressTimer = viewModelScope.launch {
-            while (true) {
-                delay(1000) // Каждую секунду
+        // Запускаем обновление прогресса каждую секунду
+        viewModelScope.launch {
+            while (isActive) {
                 _progress.value = player.currentPosition.toInt()
+                delay(1000)
             }
         }
-    }
-
-    private fun stopProgressTimer() {
-        progressTimer?.cancel() // Останавливаем таймер
-        progressTimer = null
     }
 
 
@@ -91,7 +114,7 @@ class PlaybackViewModel(
                 Log.d("PlaybackViewModel", "Calling player.play() now!")
                 _duration.value = player.duration.toInt()
                 player.play()
-              //  _playbackState.value = true
+                //  _playbackState.value = true
             }
         }
     }
@@ -106,8 +129,9 @@ class PlaybackViewModel(
         _playbackState.value = player.isPlaying
     }
 
-    fun seekTo(position: Long) {
-        player.seekTo(position)
+    fun seekTo(position: Int) {
+        player.seekTo(position.toLong())
+        _progress.value = position
     }
 
 
@@ -117,6 +141,5 @@ class PlaybackViewModel(
         player.clearMediaItems()
         super.onCleared()
     }
-
 
 }

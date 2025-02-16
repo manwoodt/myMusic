@@ -69,18 +69,18 @@
             android:id="@+id/currentTime"
             style="@style/TextViewMyStyle"
             android:layout_gravity="start"
-            android:layout_weight="1"
+
             android:textColor="@android:color/black"
             android:textSize="14sp"
             tools:text="00:00"
-            android:layout_width="0dp" />
+           />
 
         <!-- Длительность трека -->
         <TextView
             android:id="@+id/trackDuration"
             style="@style/TextViewMyStyle"
             android:layout_gravity="end"
-            android:layout_marginStart="14dp"
+            android:layout_marginStart="268dp"
             android:textColor="@android:color/black"
             android:textSize="14sp"
             tools:text="03:45" />

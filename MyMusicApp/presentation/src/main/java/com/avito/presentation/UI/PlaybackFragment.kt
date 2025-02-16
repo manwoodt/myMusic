@@ -70,21 +70,25 @@ class PlaybackFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.progress.collect { progress ->
                 binding.seekBar.progress = progress
+                binding.currentTime.text = formatTime(progress)
+                delay(500)
             }
         }
 
         // Обновление текущего времени в UI
-        lifecycleScope.launch {
-            while (true) {
-                delay(1000) // Обновляем каждую секунду
-                binding.currentTime.text = formatTime(viewModel.progress.value)
-            }
-        }
-
+//        lifecycleScope.launch {
+//            while (true) {
+//                delay(1000) // Обновляем каждую секунду
+//                binding.currentTime.text = formatTime(viewModel.progress.value)
+//            }
+//        }
+//
         lifecycleScope.launch {
             viewModel.duration.collect { duration ->
                 Log.d("trackDuration", duration.toString())
                 binding.trackDuration.text = formatTime(duration)
+                if (duration!= 0)
+                    binding.seekBar.max = duration
             }
         }
 
@@ -96,7 +100,7 @@ class PlaybackFragment : Fragment() {
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
-                    viewModel.seekTo(progress.toLong())
+                    viewModel.seekTo(progress)
                 }
             }
 

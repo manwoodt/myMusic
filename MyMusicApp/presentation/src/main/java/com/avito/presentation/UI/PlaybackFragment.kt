@@ -1,6 +1,7 @@
 package com.avito.presentation.UI
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -27,6 +28,7 @@ class PlaybackFragment : Fragment() {
     ): View {
         _binding = FragmentPlaybackBinding.inflate(inflater, container, false)
         val trackId = args.trackId
+      //  Log.d()
         viewModel.loadTrackbyId(trackId)
         return binding.root
     }

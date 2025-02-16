@@ -22,6 +22,13 @@ class ApiTracksViewModel(
     private val _tracks = MutableStateFlow<List<TrackInfo>>(emptyList())
     override val tracks: StateFlow<List<TrackInfo>> = _tracks.asStateFlow()
 
+
+    init {
+        viewModelScope.launch {
+            loadTracks()
+        }
+    }
+
     // загрузка топа песен из интернета
     override suspend fun loadTracks() {
         viewModelScope.launch {

@@ -10,24 +10,13 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
 class MyApplication : Application() {
-    private lateinit var player: ExoPlayer
 
     override fun onCreate() {
         super.onCreate()
-        player = ExoPlayer.Builder(this).build()
         startKoin {
             androidContext(this@MyApplication)
-            modules(dataModule, domainModule, presentationModule, module { single { player } })
+            modules(dataModule, domainModule, presentationModule)
         }
     }
 
-    override fun onLowMemory() {
-        super.onLowMemory()
-        player.release()
-    }
-
-    override fun onTerminate() {
-        super.onTerminate()
-        player.release()
-    }
 }

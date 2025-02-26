@@ -1,5 +1,7 @@
 package com.avito.presentation.UI
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import com.avito.presentation.MusicService
 import com.avito.presentation.R
 import com.avito.presentation.databinding.FragmentPlaybackBinding
 import com.avito.presentation.viewmodels.PlaybackViewModel
@@ -36,7 +39,7 @@ class PlaybackFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel.startMusicService = { startMusicService() }
         val trackId = args.trackId
         Log.d("PlaybackFragment", "Загрузка трека началась")
         viewModel.loadTrackbyId(trackId)
@@ -87,8 +90,10 @@ class PlaybackFragment : Fragment() {
 
 
         binding.playPauseButton.setOnClickListener {
+            startMusicService()
             viewModel.playPause()
         }
+
 
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -103,6 +108,18 @@ class PlaybackFragment : Fragment() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
             }
         })
+    }
+
+    private fun startMusicService(){
+        Log.d("PlaybackFragment", "startMusicService() called")
+        val intent = Intent(requireContext(),MusicService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Log.d("PlaybackFragment", "Starting foreground service")
+            requireContext().startForegroundService(intent) // API 26+
+        } else {
+            Log.d("PlaybackFragment", "Starting background service")
+            requireContext().startService(intent) // Для старых версий
+        }
     }
 
     private fun formatTime(ms: Int): String {

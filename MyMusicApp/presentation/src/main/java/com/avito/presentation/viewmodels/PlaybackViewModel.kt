@@ -19,6 +19,8 @@ class PlaybackViewModel(
     private val player: ExoPlayer,
 ) : ViewModel() {
 
+    var startMusicService: (() -> Unit)? = null
+
     private val _trackInfo = MutableStateFlow<TrackInfo?>(null)
     val trackInfo: StateFlow<TrackInfo?> get() = _trackInfo
 
@@ -68,6 +70,8 @@ class PlaybackViewModel(
 
                 Log.d("PlaybackViewModel", "Calling player.play() now!")
                 _duration.value = player.duration.toInt()
+                Log.d("PlaybackViewModel", "Attempting to start MusicService")
+                startMusicService?.invoke()
                 player.play()
             }
         }

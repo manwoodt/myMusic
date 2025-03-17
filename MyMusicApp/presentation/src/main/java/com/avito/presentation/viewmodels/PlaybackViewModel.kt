@@ -19,13 +19,21 @@ class PlaybackViewModel(
     private val player: ExoPlayer,
 ) : ViewModel() {
 
-    var startMusicService: (() -> Unit)? = null
+
+    companion object {
+        // Для обновления уведомления с информацией о треке
+        var instance: PlaybackViewModel? = null
+        var currentTrackTitle: String? = null
+        var currentTrackArtist: String? = null
+    }
+
+   // var startMusicService: (() -> Unit)? = null
 
     private val _trackInfo = MutableStateFlow<TrackInfo?>(null)
     val trackInfo: StateFlow<TrackInfo?> get() = _trackInfo
 
-    private val _playbackState = MutableStateFlow(false)
-    val playbackState: StateFlow<Boolean> get() = _playbackState
+    private val _isPlaying  = MutableStateFlow(false)
+    val isPlaying : StateFlow<Boolean> get() = _isPlaying
 
     private val _progress = MutableStateFlow(0)
     val progress: StateFlow<Int> = _progress
@@ -37,12 +45,13 @@ class PlaybackViewModel(
 
 
     init {
+        instance = this
         player.addListener(object : Player.Listener {
             override fun onPlaybackStateChanged(playbackState: Int) {
                 if (playbackState == Player.STATE_READY) {
                     _duration.value = player.duration.toInt()
                 }
-                _playbackState.value = player.isPlaying
+                _isPlaying.value = player.isPlaying
             }
         })
 
@@ -59,19 +68,17 @@ class PlaybackViewModel(
         viewModelScope.launch {
             val track = getTrackByIdUseCase(id)
             Log.d("PlaybackViewModel", "Track loaded: $track")
-            _trackInfo.value = track
+
             track.let {
+                _trackInfo.value = it
+                currentTrackTitle = it.title
+                currentTrackArtist = it.artist
                 player.stop()
                 player.clearMediaItems()
                 val mediaItem = MediaItem.fromUri(it.preview)
                 Log.d("PlaybackViewModel", "MediaItem set: ${it.preview}")
                 player.setMediaItem(mediaItem)
                 player.prepare()
-
-                Log.d("PlaybackViewModel", "Calling player.play() now!")
-                _duration.value = player.duration.toInt()
-                Log.d("PlaybackViewModel", "Attempting to start MusicService")
-                startMusicService?.invoke()
                 player.play()
             }
         }
@@ -84,7 +91,7 @@ class PlaybackViewModel(
         } else {
             player.play()
         }
-        _playbackState.value = player.isPlaying
+        _isPlaying.value = player.isPlaying
     }
 
     fun seekTo(position: Int) {
@@ -95,9 +102,10 @@ class PlaybackViewModel(
 
     override fun onCleared() {
         Log.d("PlaybackViewModel", "ViewModel cleared, stopping player")
+        super.onCleared()
         player.stop()
         player.clearMediaItems()
-        super.onCleared()
+
     }
 
 }

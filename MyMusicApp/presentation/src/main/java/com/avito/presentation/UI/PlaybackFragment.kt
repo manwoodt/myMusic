@@ -39,7 +39,7 @@ class PlaybackFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.startMusicService = { startMusicService() }
+        startMusicService()
         val trackId = args.trackId
         Log.d("PlaybackFragment", "Загрузка трека началась")
         viewModel.loadTrackbyId(trackId)
@@ -62,7 +62,7 @@ class PlaybackFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.playbackState.collect { isPlaying ->
+            viewModel.isPlaying.collect { isPlaying ->
                 Log.d("PlaybackFragment", "Playback state changed: $isPlaying")
                 binding.playPauseButton.setImageResource(
                     if (isPlaying) R.drawable.ic_stop else R.drawable.ic_play
@@ -83,36 +83,29 @@ class PlaybackFragment : Fragment() {
             viewModel.duration.collect { duration ->
                 Log.d("trackDuration", duration.toString())
                 binding.trackDuration.text = formatTime(duration)
-                if (duration!= 0)
+                if (duration > 0)
                     binding.seekBar.max = duration
             }
         }
 
 
         binding.playPauseButton.setOnClickListener {
-            startMusicService()
             viewModel.playPause()
         }
 
 
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                if (fromUser) {
-                    viewModel.seekTo(progress)
-                }
+                if (fromUser) viewModel.seekTo(progress)
             }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
     }
 
-    private fun startMusicService(){
+    private fun startMusicService() {
         Log.d("PlaybackFragment", "startMusicService() called")
-        val intent = Intent(requireContext(),MusicService::class.java)
+        val intent = Intent(requireContext(), MusicService::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Log.d("PlaybackFragment", "Starting foreground service")
             requireContext().startForegroundService(intent) // API 26+

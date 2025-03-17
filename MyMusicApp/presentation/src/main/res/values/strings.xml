@@ -1,0 +1,5 @@
+<resources>
+    <string name="previous_track">Предыдущий трек</string>
+    <string name="play_pause">Остановка/пауза</string>
+    <string name="next_track">Следующий трек</string>
+</resources>
